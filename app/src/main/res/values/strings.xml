@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">The Dog App</string>
+    <string name="about">Welcome to The Dog App, your go-to resource for everything dog-related!
+        Our mission is to educate and inform dog lovers about different breeds, care tips,
+        training techniques, and much more, all in one convenient app.
+    </string>
+</resources>
