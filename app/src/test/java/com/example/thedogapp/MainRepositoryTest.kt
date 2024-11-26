@@ -2,11 +2,11 @@ package com.example.thedogapp
 
 import com.example.thedogapp.data.local.DogDao
 import com.example.thedogapp.data.local.DogEntity
-import com.example.thedogapp.data.model.Dog
+import com.example.thedogapp.data.model.DogResponse
 import com.example.thedogapp.data.model.Height
 import com.example.thedogapp.data.model.Weight
 import com.example.thedogapp.data.remote.ApiService
-import com.example.thedogapp.data.remote.NetworkResult
+import com.example.thedogapp.data.remote.Result
 import com.example.thedogapp.data.repository.MainRepository
 import com.example.thedogapp.data.repository.MainRepositoryImpl
 import io.mockk.MockKAnnotations
@@ -31,7 +31,7 @@ class MainRepositoryTest {
 
     private lateinit var repository: MainRepository
 
-    private val dog = Dog(
+    private val dog = DogResponse(
         id = 1,
         name = "Test",
         temperament = "Happy",
@@ -46,7 +46,7 @@ class MainRepositoryTest {
         id = 2,
         name = "Test",
         temperament = "Happy",
-        image = "Test",
+        imageUrl = "Test",
         height = Height(imperial = "12", metric = "12"),
         weight = Weight(imperial = "12", metric = "12"),
         lifespan = "12",
@@ -63,7 +63,7 @@ class MainRepositoryTest {
     fun fetchDogsFromRemoteSource() = runTest {
         coEvery { api.getDogs(any()) } returns Response.success(listOf(dog))
         val result = repository.fetchDogsFromRemoteSource()
-        assertNotNull((result as NetworkResult.Success).data)
+        assertNotNull((result as Result.Success).data)
     }
 
     @Test

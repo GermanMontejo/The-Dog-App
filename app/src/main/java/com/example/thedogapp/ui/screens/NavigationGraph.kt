@@ -9,8 +9,6 @@ import androidx.navigation.toRoute
 import com.example.thedogapp.data.Screens
 import kotlinx.serialization.json.Json
 
-
-
 @Composable
 fun NavigationGraph(navController: NavHostController, modifier: Modifier) {
     NavHost(

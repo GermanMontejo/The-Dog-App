@@ -1,6 +1,5 @@
 package com.example.thedogapp.data.local
 
-import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.example.thedogapp.data.model.Height
@@ -12,7 +11,7 @@ data class DogEntity(
     val id: Int,
     val name: String,
     val temperament: String,
-    val image: String,
+    val imageUrl: String,
     val height: Height,
     val weight: Weight,
     val lifespan: String,

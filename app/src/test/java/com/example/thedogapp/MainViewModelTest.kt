@@ -1,14 +1,12 @@
 package com.example.thedogapp
 
-import com.example.thedogapp.data.model.Dog
-import com.example.thedogapp.data.model.Height
-import com.example.thedogapp.data.model.Image
-import com.example.thedogapp.data.model.Weight
-import com.example.thedogapp.data.remote.NetworkResult
-import com.example.thedogapp.data.repository.MainRepository
+import com.example.thedogapp.data.remote.Result
+import com.example.thedogapp.domain.model.Dog
+import com.example.thedogapp.domain.usecase.GetDogsUseCase
+import com.example.thedogapp.domain.usecase.GetFavoriteDogsUseCase
+import com.example.thedogapp.domain.usecase.UpdateDogUseCase
 import com.example.thedogapp.viewmodel.MainViewModel
 import io.mockk.coEvery
-import io.mockk.coVerify
 import io.mockk.mockk
 import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.Dispatchers
@@ -27,36 +25,31 @@ import org.junit.Test
 @OptIn(ExperimentalCoroutinesApi::class)
 class MainViewModelTest {
 
-    private lateinit var repository: MainRepository
     private lateinit var viewModel: MainViewModel
-
+    private lateinit var getDogsUseCase: GetDogsUseCase
+    private lateinit var getFavoriteDogsUseCase: GetFavoriteDogsUseCase
+    private lateinit var updateDogUseCase: UpdateDogUseCase
 
     private val dogs = listOf(
         Dog(
-            height = Height(imperial = "17 - 20", metric = "43 - 51"),
+            height = "43 - 51 cm",
             id = 1,
-            image = Image(
-                id = "1",
-                url = "https://cdn2.thedogapi.com/images/HyWNfxc47.jpg",
-                width = 740,
-                height = 430
-            ),
+            imageUrl = "https://cdn2.thedogapi.com/images/HyWNfxc47.jpg",
             lifespan = "9 - 11 years",
             name = "French Bulldog",
-            referenceImageId = "HyWNfxc47",
             temperament = "Playful, Affectionate, Keen, Sociable, Lively, Alert, Easygoing, Patient, Athletic, Bright",
-            weight = Weight(
-                imperial = "28",
-                metric = "13"
-            )
+            weight = "13 kg",
+            isFavorite = true
         )
     )
 
     @Before
     fun setup() {
         Dispatchers.setMain(StandardTestDispatcher())
-        repository = mockk(relaxed = true)
-        viewModel = MainViewModel(repository)
+        getDogsUseCase = mockk(relaxed = true)
+        getFavoriteDogsUseCase = mockk(relaxed = true)
+        updateDogUseCase = mockk(relaxed = true)
+        viewModel = MainViewModel(getDogsUseCase, getFavoriteDogsUseCase, updateDogUseCase)
     }
 
     @After
@@ -66,8 +59,8 @@ class MainViewModelTest {
 
     @Test
     fun testGetNetworkResultSuccess() = runTest {
-        coEvery { repository.fetchDogsFromLocalDB() } returns flowOf(emptyList())
-        coEvery { repository.fetchDogsFromRemoteSource() } returns NetworkResult.Success(data = dogs)
+        coEvery { getDogsUseCase.getDogsFromDB() } returns flowOf(emptyList())
+        coEvery { getDogsUseCase.getDogsFromAPI() } returns Result.Success(data = dogs)
         viewModel.getDogs()
         advanceUntilIdle()
         val result = viewModel.dogState.first()
@@ -77,8 +70,8 @@ class MainViewModelTest {
 
     @Test
     fun testGetNetworkResultError() = runTest {
-        coEvery { repository.fetchDogsFromLocalDB() } returns flowOf(emptyList())
-        coEvery { repository.fetchDogsFromRemoteSource() } returns NetworkResult.Error(message = "Error!")
+        coEvery { getDogsUseCase.getDogsFromDB() } returns flowOf(emptyList())
+        coEvery { getDogsUseCase.getDogsFromAPI() } returns Result.Error(message = "Error!")
         viewModel.getDogs()
         advanceUntilIdle()
         val result = viewModel.dogState.first()
@@ -88,11 +81,10 @@ class MainViewModelTest {
 
     @Test
     fun testGetFromLocalDB() = runTest {
-        coEvery { repository.fetchDogsFromLocalDB() } returns flowOf(dogs)
+        coEvery { getDogsUseCase.getDogsFromDB() } returns flowOf(dogs)
         viewModel.getDogs()
         advanceUntilIdle()
         val result = viewModel.dogState.first()
-        coVerify(exactly = 0) { viewModel.getDogsFromRemoteSource() }
         assertEquals(result.isLoading, false)
         assertEquals(result.dogs, dogs)
     }

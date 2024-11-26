@@ -25,7 +25,7 @@ class DogDaoTest {
         id = 1,
         name = "Test",
         temperament = "Happy",
-        image = "test",
+        imageUrl = "test",
         height = Height(imperial = "12", metric = "12"),
         weight = Weight(imperial = "12", metric = "12"),
         lifespan = "12",

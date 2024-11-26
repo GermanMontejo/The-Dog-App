@@ -17,7 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.example.thedogapp.data.items
+import com.example.thedogapp.data.navBarItems
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -51,7 +51,7 @@ fun AppNavigationBar(navController: NavHostController) {
     val currentRoute = navBackStackEntry?.destination?.route
 
     NavigationBar(modifier = Modifier.fillMaxWidth()) {
-        items.forEach { item ->
+        navBarItems.forEach { item ->
             NavigationBarItem(
                 selected = item.route::class.qualifiedName == currentRoute,
                 onClick = {

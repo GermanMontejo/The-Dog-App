@@ -5,17 +5,24 @@ import com.example.thedogapp.data.local.DogDatabase
 import com.example.thedogapp.data.remote.ApiService
 import com.example.thedogapp.data.repository.MainRepository
 import com.example.thedogapp.data.repository.MainRepositoryImpl
+import com.example.thedogapp.domain.usecase.GetDogsUseCase
+import com.example.thedogapp.domain.usecase.GetFavoriteDogsUseCase
+import com.example.thedogapp.domain.usecase.UpdateDogUseCase
 import com.example.thedogapp.viewmodel.MainViewModel
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
 import org.koin.android.ext.koin.androidContext
-import org.koin.androidx.viewmodel.dsl.viewModel
+import org.koin.androidx.viewmodel.dsl.viewModelOf
+import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.kotlinx.serialization.asConverterFactory
 
 val appModule = module {
-    viewModel<MainViewModel> { MainViewModel(get()) }
+    singleOf(::GetDogsUseCase)
+    singleOf(::GetFavoriteDogsUseCase)
+    singleOf(::UpdateDogUseCase)
+    viewModelOf(::MainViewModel)
     single<MainRepository> {
         MainRepositoryImpl(get(), get())
     }

@@ -13,7 +13,7 @@ data class NavigationBarItem<T>(
     var icon: ImageVector,
 )
 
-val items = listOf(
+val navBarItems = listOf(
     NavigationBarItem("Home", Screens.Home, Icons.Default.Home),
     NavigationBarItem("Favorites", Screens.Favorites, Icons.Default.Favorite),
     NavigationBarItem("About", Screens.About, Icons.Default.Info),

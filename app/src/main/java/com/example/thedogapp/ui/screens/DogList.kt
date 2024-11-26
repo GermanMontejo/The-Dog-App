@@ -36,7 +36,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.example.thedogapp.data.Screens
-import com.example.thedogapp.data.model.Dog
+import com.example.thedogapp.domain.model.Dog
 import com.example.thedogapp.ui.theme.Color.BackgroundColorLight
 import com.example.thedogapp.viewmodel.MainViewModel
 import kotlinx.serialization.encodeToString
@@ -82,6 +82,7 @@ fun Dog(
 
     ElevatedCard(
         onClick = {
+            println("tag123, dog: $dog")
             navController.navigate(Screens.Details(jsonStr = Json.encodeToString(dog))) {
                 launchSingleTop = true
             }
@@ -107,7 +108,7 @@ private fun CardContent(
 ) {
     Column {
         AsyncImage(
-            model = dog.image.url,
+            model = dog.imageUrl,
             contentDescription = dog.name,
             modifier = Modifier.fillMaxWidth().height(200.dp).background(Color.LightGray),
             contentScale = ContentScale.FillBounds
@@ -148,8 +149,8 @@ private fun CardContent(
             horizontalArrangement = Arrangement.Center,
             verticalArrangement = Arrangement.Center
         ) {
-            val temperaments = dog.temperament?.split(",")
-            temperaments?.forEachIndexed { index, temperament ->
+            val temperaments = dog.temperament.split(",")
+            temperaments.forEachIndexed { index, temperament ->
                 Text(
                     text = if (index < temperaments.size - 1) {
                         "${temperament.trim()}, "

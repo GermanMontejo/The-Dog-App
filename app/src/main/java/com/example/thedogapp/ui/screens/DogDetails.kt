@@ -20,7 +20,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
-import com.example.thedogapp.data.model.Dog
+import com.example.thedogapp.domain.model.Dog
 
 
 @Composable
@@ -31,7 +31,7 @@ fun DogDetailsScreen(onBackPressed: () -> Unit, dog: Dog) {
             .fillMaxSize()
     ) {
         AsyncImage(
-            model = dog.image.url,
+            model = dog.imageUrl,
             modifier = Modifier
                 .clip(RoundedCornerShape(12.dp))
                 .fillMaxWidth()
@@ -42,9 +42,9 @@ fun DogDetailsScreen(onBackPressed: () -> Unit, dog: Dog) {
 
         val details = mapOf(
             "Breed" to dog.name,
-            "Temperament" to (dog.temperament ?: "N/A"),
-            "Height" to "${dog.height.metric} cm",
-            "Weight" to "${dog.weight.metric} kg",
+            "Temperament" to dog.temperament,
+            "Height" to "${dog.height} cm",
+            "Weight" to "${dog.weight} kg",
             "Lifespan" to dog.lifespan
         )
         ItemRow(details)

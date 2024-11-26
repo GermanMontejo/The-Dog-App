@@ -1,5 +1,5 @@
 [versions]
-agp = "8.8.0-alpha08"
+agp = "8.7.2"
 kotlin = "2.0.21"
 coreKtx = "1.13.1"
 junit = "4.13.2"
@@ -18,7 +18,6 @@ coil = "2.5.0"
 coroutines = "1.7.3"
 mockk = "1.13.5"
 coreKtxVersion = "1.6.1"
-detekt = "1.23.1"
 
 [libraries]
 mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
